@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硕士研究生培养生涯表</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 30px 40px;
+            color: #333;
+        }
+
+        .container { max-width: 100%; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.thesis { background: #ff6b6b; box-shadow: 0 0 8px rgba(255,107,107,0.5); }
+        .legend-dot.normal { background: #f7931e; }
+        .legend-dot.empty { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        .legend-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legend-bar-segment {
+            width: 30px;
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            padding: 25px 30px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+        }
+
+        /* Prep Card (研0) */
+        .prep-card {
+            background: rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 20px 28px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .prep-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .prep-content {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .prep-content strong {
+            color: #ff6b6b;
+        }
+
+        /* Year Section */
+        .year-section {
+            margin-bottom: 20px;
+        }
+
+        .year-header {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 22px;
+            border-radius: 18px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Semester Row */
+        .semester-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+        }
+
+        .semester-label {
+            width: 75px;
+            flex-shrink: 0;
+            text-align: center;
+            padding-top: 5px;
+        }
+
+        .semester-circle {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.15rem;
+            box-shadow: 0 3px 12px rgba(102,126,234,0.4);
+            border: 3px solid rgba(255,255,255,0.3);
+            margin: 0 auto;
+        }
+
+        .semester-text {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.75rem;
+            margin-top: 5px;
+            white-space: nowrap;
+        }
+
+        .semester-content {
+            flex: 1;
+            min-width: 0;
+            overflow: visible;
+        }
+
+        .semester-info {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.78rem;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        /* Weeks Strip */
+        .weeks-strip {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 0;
+            flex-wrap: nowrap;
+        }
+
+        /* Week Node */
+        .week-node {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .week-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .week-circle.important {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            box-shadow: 0 2px 10px rgba(255,107,107,0.45);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .week-circle.normal {
+            background: linear-gradient(135deg, #f7931e, #e8850a);
+            box-shadow: 0 2px 8px rgba(247,147,30,0.35);
+            border: 2px solid rgba(255,255,255,0.25);
+        }
+
+        .week-circle.empty {
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.35);
+            width: 30px;
+            height: 30px;
+            font-size: 0.6rem;
+        }
+
+        .week-circle.holiday {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            width: auto;
+            min-width: 34px;
+            padding: 0 10px;
+            font-size: 0.7rem;
+            border: 2px solid rgba(255,255,255,0.25);
+        }
+
+        .week-circle.holiday.has-events {
+            box-shadow: 0 2px 10px rgba(102,126,234,0.5);
+        }
+
+        .week-node:hover .week-circle {
+            transform: scale(1.25);
+            z-index: 20;
+        }
+
+        .week-node:hover .week-circle.empty {
+            transform: scale(1.2);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .week-label {
+            font-size: 0.58rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 2px;
+            white-space: nowrap;
+        }
+
+        /* Phase Bar (positioned by JS after render) */
+        .semester-content {
+            flex: 1;
+            min-width: 0;
+            overflow: visible;
+            position: relative;
+        }
+
+        .phase-bar-container {
+            position: relative;
+            height: 24px;
+            margin-top: 6px;
+        }
+
+        .phase-bar-segment {
+            position: absolute;
+            height: 7px;
+            border-radius: 4px;
+            top: 0;
+        }
+
+        .phase-bar-label {
+            position: absolute;
+            top: 10px;
+            font-size: 0.63rem;
+            color: rgba(255,255,255,0.5);
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+
+        /* Activities Panel */
+        .activities-panel {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 360px;
+            max-height: 380px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 12px 45px rgba(0,0,0,0.35);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1000;
+        }
+
+        .activities-panel::-webkit-scrollbar { width: 5px; }
+        .activities-panel::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+        .activities-panel::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: white;
+        }
+
+        .week-node:hover .activities-panel {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .week-node.edge-left .activities-panel {
+            left: 0;
+            transform: translateX(0);
+        }
+        .week-node.edge-left .activities-panel::after {
+            left: 17px;
+            transform: translateX(0);
+        }
+
+        .week-node.edge-right .activities-panel {
+            left: auto;
+            right: 0;
+            transform: translateX(0);
+        }
+        .week-node.edge-right .activities-panel::after {
+            left: auto;
+            right: 17px;
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #1a1a2e;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .panel-phase {
+            display: inline-block;
+            background: #f0f0ff;
+            color: #667eea;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .activity-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.2s ease;
+        }
+
+        .activity-card:last-child { margin-bottom: 0; }
+
+        .activity-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .activity-card.thesis-highlight {
+            background: linear-gradient(135deg, #ffe0e0, #ffcccc);
+            border-left: 4px solid #ff6b6b;
+            position: relative;
+        }
+
+        .activity-card.thesis-highlight::before {
+            content: '\2605 \91CD\70B9';
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .activity-card.normal-highlight {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-left: 4px solid #f7931e;
+        }
+
+        .activity-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.92rem;
+            margin-bottom: 4px;
+        }
+
+        .activity-card.thesis-highlight .activity-name { color: #cc0000; font-weight: 700; }
+        .activity-card.thesis-highlight { color: #cc0000; }
+        .activity-card.normal-highlight .activity-name { color: #e65100; }
+
+        .activity-files {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .file-tag {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #1565c0;
+            padding: 3px 9px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .file-tag:hover {
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
+            transform: scale(1.04);
+        }
+
+        .file-tag.no-file {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            color: #757575;
+            cursor: default;
+        }
+
+        .no-activity {
+            color: #999;
+            font-size: 0.88rem;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            margin-top: 25px;
+            padding: 18px 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            border-left: 4px solid rgba(255,255,255,0.2);
+        }
+
+        .notes-title {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .notes-content {
+            color: rgba(255,255,255,0.75);
+            font-size: 0.85rem;
+            line-height: 1.8;
+            font-weight: 700;
+        }
+
+        /* Phase Color Classes */
+        .phase-education { background: #4ecdc4; }
+        .phase-teaching { background: #667eea; }
+        .phase-exam { background: #ffd93d; }
+        .phase-practice { background: #6bcb77; }
+        .phase-thesis { background: #9b59b6; }
+        .phase-graduation { background: #ff6b6b; }
+        .phase-gap { background: rgba(255,255,255,0.08); }
+
+        @media (max-width: 1200px) {
+            .weeks-strip { gap: 2px; }
+            .week-circle { width: 28px; height: 28px; font-size: 0.6rem; }
+            .week-circle.empty { width: 24px; height: 24px; }
+            .week-circle.holiday { font-size: 0.6rem; padding: 0 7px; }
+            .semester-circle { width: 38px; height: 38px; font-size: 1rem; }
+            .activities-panel { width: 320px; }
+        }
+
+        @media (max-width: 900px) {
+            body { padding: 15px; }
+            .semester-row { flex-direction: column; align-items: stretch; }
+            .semester-label { width: 100%; padding-top: 0; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+            .semester-circle { margin: 0; width: 34px; height: 34px; font-size: 0.9rem; }
+            .weeks-strip { overflow-x: auto; padding-bottom: 5px; }
+            .activities-panel { width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>中国财政发展协同创新中心硕士研究生培养生涯表</h1>
+        <p class="subtitle">鼠标悬停周节点查看详细活动安排 | 彩色节点表示有事项安排</p>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-dot thesis"></span>
+                <span>重点事项（红色）</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot normal"></span>
+                <span>常规事项（橙色）</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot empty"></span>
+                <span>暂无特定事项</span>
+            </div>
+            <div class="legend-bar">
+                <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">阶段条：</span>
+                <span class="legend-bar-segment phase-teaching" title="课堂教学"></span>
+                <span class="legend-bar-segment phase-exam" title="考试周"></span>
+                <span class="legend-bar-segment phase-practice" title="实习实践"></span>
+                <span class="legend-bar-segment phase-thesis" title="论文撰写"></span>
+                <span class="legend-bar-segment phase-graduation" title="毕业事宜"></span>
+            </div>
+        </div>
+
+        <div class="timeline-container" id="timeline"></div>
+    </div>
+
+    <script>
+        // File download mapping
+        const fileMapping = {
+            "《中央财经大学学籍管理规定》": "docs/《中央财经大学研究生学籍管理规定（修订）》.pdf",
+            "《中央财经大学教学管理规定》": "docs/《中央财经大学研究生教学管理规定》（校发〔2017〕159号）.pdf",
+            "《中央财经大学研究生课程免修管理办法》": "docs/中央财经大学研究生课程免修管理办法.pdf",
+            "《研究生培养计划表》": "docs/硕士研究生培养计划表.docx",
+            "《中央财经大学硕博连读研究生选拔与培养管理办法（修订）》": "docs/《中央财经大学硕博连读研究生选拔与培养管理办法（修订）》.pdf",
+            "《中国财政发展协同创新中心硕士研究生科研成果审核办法》": "docs/中国财政发展协同创新中心硕士研究生科研成果审核办法.docx",
+            "《研究生学术交流奖励计划管理办法》": "docs/中央财经大学研究生学术交流奖励计划管理办法.pdf",
+            "《研究生国家奖学金评审办法》": "docs/《中央财经大学研究生国家奖学金评审办法》.pdf",
+            "《研究生学业奖学金评审管理办法》": "docs/《中央财经大学研究生学业奖学金评审管理办法》.pdf",
+            "《研究生三助一辅工作管理办法》": "docs/《中央财经大学研究生\u201c三助一辅\u201d工作管理办法（修订）》.pdf",
+            "《研究生特殊困难补助管理办法》": "docs/《中央财经大学研究生特殊困难补助管理办法》.pdf",
+            "《家庭经济困难研究生认定工作办法》": "docs/《中央财经大学家庭经济困难研究生认定工作办法》.pdf",
+            "《研究生公派出境学习成绩与学分认定管理办法》": "docs/《中央财经大学研究生公派出境学习成绩与学分认定管理办法》.pdf",
+            "《中央财经大学硕士学位论文和学位授予管理办法》": "docs/《中央财经大学硕士学位论文和学位授予管理办法》.pdf",
+            "《研究生学位论文写作及格式的规定》": "docs/中央财经大学研究生学位论文写作及格式的规定.docx",
+            "《学位论文不端行为检测相关要求》": "docs/学位论文不端行为检测相关要求.doc",
+            "《中央财经大学硕士研究生培养计划表》": "docs/中央财经大学硕士研究生培养计划表.docx",
+            "《硕士研究生科研成果审核办法》": "docs/中国财政发展协同创新中心硕士研究生科研成果审核办法.docx"
+        };
+
+        // Event to file association
+        function getEventFiles(eventName) {
+            if (eventName.includes('报到') || eventName.includes('注册') || eventName.includes('退选课')) {
+                return ["《中央财经大学学籍管理规定》", "《中央财经大学教学管理规定》", "《中央财经大学研究生课程免修管理办法》"];
+            }
+            if (eventName.includes('硕博连读')) {
+                return ["《中央财经大学硕博连读研究生选拔与培养管理办法（修订）》"];
+            }
+            if (eventName.includes('师生互选')) {
+                return ["《中央财经大学硕士研究生培养计划表》"];
+            }
+            if (eventName.includes('社会性')) return [];
+            if (eventName.includes('国奖') || eventName.includes('奖助')) {
+                return ["《研究生国家奖学金评审办法》", "《研究生学业奖学金评审管理办法》", "《研究生三助一辅工作管理办法》", "《研究生特殊困难补助管理办法》", "《家庭经济困难研究生认定工作办法》"];
+            }
+            if (eventName.includes('开题答辩')) {
+                return ["《中央财经大学硕士学位论文和学位授予管理办法》", "《研究生学位论文写作及格式的规定》", "《学位论文不端行为检测相关要求》"];
+            }
+            if (eventName.includes('不端检测')) {
+                return ["《学位论文不端行为检测相关要求》"];
+            }
+            if (eventName.includes('学术交流')) {
+                return ["《研究生学术交流奖励计划管理办法》"];
+            }
+            if (eventName.includes('答辩资格审核') && eventName.includes('预答辩')) return [];
+            if (eventName.includes('正式答辩') || eventName.includes('预答辩')) {
+                return ["《中央财经大学硕士学位论文和学位授予管理办法》"];
+            }
+            if (eventName.includes('科研成果') || eventName.includes('科研项目')) {
+                return ["《中国财政发展协同创新中心硕士研究生科研成果审核办法》"];
+            }
+            return [];
+        }
+
+        function isImportant(eventName) {
+            if (eventName.includes('论文大赛') || eventName.includes('龙马学术')) return false;
+            if (eventName.includes('学位论文') || eventName.includes('开题') ||
+                eventName.includes('不端') || eventName.includes('匿名评审') ||
+                eventName.includes('答辩') || eventName.includes('毕业资格')) return true;
+            if (eventName.includes('科研')) return true;
+            if (eventName.includes('求职')) return true;
+            if (eventName.includes('硕博连读')) return true;
+            if (eventName.includes('师生互选')) return true;
+            return false;
+        }
+
+        // Phase color mapping
+        const phaseColors = {
+            '入学教育': 'phase-education',
+            '课堂教学': 'phase-teaching',
+            '考试周': 'phase-exam',
+            '实习实践': 'phase-practice',
+            '学位论文撰写': 'phase-thesis',
+            '学位论文答辩等毕业相关事宜': 'phase-graduation'
+        };
+
+        function getPhaseClass(phaseName) {
+            for (const [key, cls] of Object.entries(phaseColors)) {
+                if (phaseName.includes(key)) return cls;
+            }
+            if (phaseName.includes('选题') || phaseName.includes('开题')) return 'phase-thesis';
+            return 'phase-teaching';
+        }
+
+        // Complete semester data
+        const semesters = [
+            {
+                num: 1, yearLabel: "研一", season: "秋季学期", fullLabel: "第一学期",
+                preHoliday: { label: "暑假", events: [] },
+                postHoliday: { label: "寒假", events: [] },
+                phases: [
+                    { from: 1, to: 1, name: "入学教育" },
+                    { from: 2, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 17, to: 18, name: "考试周" },
+                    { from: 19, to: 20, name: "实习实践" }
+                ],
+                weeks: {
+                    1: ["报到、注册、退选课"],
+                    2: ["新生班会、新生入学图像采集、学信网核对学籍信息"],
+                    4: ["硕博连读选拔"],
+                    6: ["国奖、学业奖等奖助工作评定、家庭经济困难认定"],
+                    8: ["积极分子推优、秋季学期运动会"],
+                    9: ["研究生培养座谈会"],
+                    10: ["社会性奖助学金申请"],
+                    11: ["三好学生、优秀学生干部、优秀班集体等评选"],
+                    12: ["完成新生引航工程"],
+                    14: ["下半年全国大学英语四、六级考试"]
+                }
+            },
+            {
+                num: 2, yearLabel: "研一", season: "春季学期", fullLabel: "第二学期",
+                preHoliday: { label: "寒假", events: [] },
+                postHoliday: { label: "暑假", events: [] },
+                phases: [
+                    { from: 1, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 17, to: 18, name: "考试周" },
+                    { from: 19, to: 20, name: "实习实践" }
+                ],
+                weeks: {
+                    1: ["报到、注册、退选课、期初公共课补考、重修"],
+                    2: ["研究生论文大赛"],
+                    4: ["龙马学术之星评选"],
+                    6: ["积极分子推优"],
+                    7: ["科教融汇研究生学术新星孵化计划申报"],
+                    8: ["春季学期运动会"],
+                    9: ["发展对象推优"],
+                    13: ["6月中旬前可提交研究生学术交流奖励计划申请"],
+                    14: ["上半年全国大学英语四、六级考试"]
+                }
+            },
+            {
+                num: 3, yearLabel: "研二", season: "秋季学期", fullLabel: "第三学期",
+                preHoliday: { label: "暑假", events: [] },
+                postHoliday: { label: "寒假", events: [] },
+                phases: [
+                    { from: 1, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 17, to: 18, name: "考试周" },
+                    { from: 19, to: 20, name: "实习实践" }
+                ],
+                weeks: {
+                    1: ["报到、注册、退选课、期初公共课补考、重修"],
+                    4: ["硕博连读选拔"],
+                    6: ["国奖、学业奖等奖助工作评定、家庭经济困难认定"],
+                    8: ["积极分子推优、秋季学期运动会"],
+                    9: ["研究生培养座谈会"],
+                    10: ["社会性奖助学金申请"],
+                    11: ["三好学生、优秀学生干部、优秀班集体等评选"],
+                    14: ["下半年全国大学英语四、六级考试"],
+                    16: ["指导教师与硕士研究生师生互选（需填写研究生培养计划表）"]
+                }
+            },
+            {
+                num: 4, yearLabel: "研二", season: "春季学期", fullLabel: "第四学期",
+                preHoliday: { label: "寒假", events: ["期初公共课补考、重修"] },
+                postHoliday: { label: "暑假", events: [] },
+                phases: [
+                    { from: 1, to: 18, name: "确定选题、准备开题" },
+                    { from: 19, to: 20, name: "实习实践" }
+                ],
+                weeks: {
+                    1: ["报到、注册、退选课"],
+                    2: ["研究生论文大赛"],
+                    4: ["龙马学术之星评选"],
+                    6: ["积极分子推优"],
+                    7: ["硕博连读中期考核"],
+                    8: ["春季学期运动会"],
+                    9: ["发展对象推优"],
+                    13: ["6月中旬前可提交研究生学术交流奖励计划申请"],
+                    14: ["上半年全国大学英语四、六级考试"],
+                    15: ["学位论文开题答辩", "通过开题的硕士研究生进入硕士学位论文的写作阶段。未通过开题的硕士研究生，须在导师指导下根据开题论证委员会意见对开题报告进行修改，再次开题时间由导师与学院共同确定。如果第二次开题论证仍未通过，则取消其申请硕士学位的资格，做结业处理。"],
+                    16: ["学位论文开题答辩", "通过开题的硕士研究生进入硕士学位论文的写作阶段。未通过开题的硕士研究生，须在导师指导下根据开题论证委员会意见对开题报告进行修改，再次开题时间由导师与学院共同确定。如果第二次开题论证仍未通过，则取消其申请硕士学位的资格，做结业处理。"]
+                }
+            },
+            {
+                num: 5, yearLabel: "研三", season: "秋季学期", fullLabel: "第五学期",
+                preHoliday: { label: "暑假", events: [] },
+                postHoliday: { label: "寒假", events: [] },
+                phases: [
+                    { from: 1, to: 20, name: "学位论文撰写" }
+                ],
+                weeks: {
+                    1: ["硕士研究生调研实习报告（第五学期前完成）"],
+                    6: ["国奖、学业奖等奖助工作评定、家庭经济困难认定"],
+                    8: ["积极分子推优、秋季学期运动会"],
+                    9: ["研究生培养座谈会"],
+                    10: ["社会性奖助学金申请"],
+                    11: ["三好学生、优秀学生干部、优秀班集体等评选"],
+                    14: ["下半年全国大学英语四、六级考试"]
+                }
+            },
+            {
+                num: 6, yearLabel: "研三", season: "春季学期", fullLabel: "第六学期",
+                preHoliday: { label: "寒假", events: [] },
+                postHoliday: null,
+                maxWeek: 16,
+                phases: [
+                    { from: 1, to: 16, name: "学位论文答辩等毕业相关事宜" }
+                ],
+                weeks: {
+                    1: ["答辩资格审核、学位论文预答辩", "预答辩未通过无法申请答辩，硕士研究生的答辩资格审核内容具体包括：身份证复印件、课程成绩单（一式两份）、开题报告书（论证活页仅提交电子版）、硕士学位研究生培养计划表（一式两份）、硕士学位申请书（一式两份）、实习报告（非全日制学生无此项）。"],
+                    2: ["学位论文学术不端检测、送匿名评审", "对不同学术不端行为检测结果，按照以下规定处理：（一）总文字复制百分比在百分之十五以内（去除本人文献文字复制比）的硕士学位论文，视为通过检测；（二）总文字复制百分比超过百分之十五且不满百分之三十（去除本人文献文字复制比）的硕士学位论文，需修改后进行复检。复检结果仍为超过百分之十五且不满百分之三十的，视为未通过检测；（三）总文字复制百分比在百分之三十以上（去除本人文献文字复制比）的学位论文，视为未通过检测；（四）学位论文未通过检测的硕士研究生，须在导师指导下对论文进行认真修改，四个月后可填写《中央财经大学研究生学位论文重新检测申请表》，申请重新检测，检测通过后方可进行评阅。如果重新检测仍未通过，取消其申请硕士学位的资格，做结业处理。"],
+                    3: ["匿名评审", "所有硕士学位论文在参加答辩前均须进行双向匿名评阅，研究生院对各学院的学术硕士学位论文按照一定抽检比例统一组织双向匿名评阅工作，其他硕士学位论文的双向匿名评阅工作由各学院组织。硕士学位论文须聘请二名具有副高级以上职称（或硕士研究生导师）的评阅人进行评阅，其中至少有一名为校外专家"],
+                    4: ["研究生论文大赛、龙马学术之星评选"],
+                    7: ["匿名评审结果返回，修改论文"],
+                    8: ["毕业资格审核"],
+                    9: ["发展对象推优"],
+                    11: ["学位论文正式答辩"],
+                    12: ["优秀毕业生评选"],
+                    14: ["毕业典礼"],
+                    15: ["离校手续办理"]
+                }
+            }
+        ];
+
+        function getPhaseForWeek(semester, weekNum) {
+            for (const phase of semester.phases) {
+                if (weekNum >= phase.from && weekNum <= phase.to) return phase.name;
+            }
+            return null;
+        }
+
+        function getWeekType(events) {
+            if (!events || events.length === 0) return 'empty';
+            if (events.some(e => isImportant(e))) return 'important';
+            return 'normal';
+        }
+
+        function buildFileHTML(eventName) {
+            const files = getEventFiles(eventName);
+            if (files.length === 0) return '';
+            return '<div class="activity-files">' + files.map(f => {
+                const path = fileMapping[f];
+                if (path) {
+                    return `<a href="${path}" class="file-tag" download title="点击下载">${f}</a>`;
+                }
+                return `<span class="file-tag no-file">${f}</span>`;
+            }).join('') + '</div>';
+        }
+
+        function buildPanelHTML(title, phaseName, events, emptyMsg) {
+            let html = `<div class="panel-header">${title}</div>`;
+            if (phaseName) {
+                html += `<div class="panel-phase">${phaseName}</div>`;
+            }
+            if (events && events.length > 0) {
+                const firstImportant = isImportant(events[0]);
+                html += events.map((e, idx) => {
+                    const imp = (idx === 0) ? firstImportant : firstImportant || isImportant(e);
+                    const cls = imp ? 'thesis-highlight' : 'normal-highlight';
+                    return `<div class="activity-card ${cls}">
+                        <div class="activity-name">${e}</div>
+                        ${buildFileHTML(e)}
+                    </div>`;
+                }).join('');
+            } else {
+                html += `<div class="no-activity">${emptyMsg || '暂无特定事项'}</div>`;
+            }
+            return html;
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline');
+
+            // Prep card (研0)
+            const prepCard = document.createElement('div');
+            prepCard.className = 'prep-card';
+            prepCard.innerHTML = `
+                <div class="prep-badge">研0 预备期</div>
+                <div class="prep-content">
+                    推免结束后：了解中心导师研究方向，<strong>积极联系中心老师参与科研项目</strong>，研读《学术型硕士研究生培养方案》
+                </div>
+            `;
+            container.appendChild(prepCard);
+
+            // Group semesters by year
+            const years = [
+                { label: "研一", semesters: [semesters[0], semesters[1]] },
+                { label: "研二", semesters: [semesters[2], semesters[3]] },
+                { label: "研三", semesters: [semesters[4], semesters[5]] }
+            ];
+
+            years.forEach(yearInfo => {
+                const yearSection = document.createElement('div');
+                yearSection.className = 'year-section';
+
+                const yearHeader = document.createElement('div');
+                yearHeader.className = 'year-header';
+                yearHeader.textContent = yearInfo.label;
+                yearSection.appendChild(yearHeader);
+
+                yearInfo.semesters.forEach(sem => {
+                    const semRow = document.createElement('div');
+                    semRow.className = 'semester-row';
+
+                    // Semester label
+                    const semLabel = document.createElement('div');
+                    semLabel.className = 'semester-label';
+                    semLabel.innerHTML = `
+                        <div class="semester-circle">${sem.num}</div>
+                        <div class="semester-text">${sem.season}</div>
+                    `;
+                    semRow.appendChild(semLabel);
+
+                    // Semester content
+                    const semContent = document.createElement('div');
+                    semContent.className = 'semester-content';
+
+                    // Weeks strip
+                    const weeksStrip = document.createElement('div');
+                    weeksStrip.className = 'weeks-strip';
+
+                    const totalNodes = [];
+
+                    // Pre-holiday
+                    if (sem.preHoliday) {
+                        const hNode = document.createElement('div');
+                        hNode.className = 'week-node edge-left';
+                        const hasEvents = sem.preHoliday.events.length > 0;
+                        hNode.innerHTML = `
+                            <div class="week-circle holiday${hasEvents ? ' has-events' : ''}">${sem.preHoliday.label}</div>
+                            <div class="activities-panel">
+                                ${buildPanelHTML(sem.fullLabel + ' · ' + sem.preHoliday.label, null, sem.preHoliday.events)}
+                            </div>
+                        `;
+                        weeksStrip.appendChild(hNode);
+                        totalNodes.push('holiday');
+                    }
+
+                    // Week 1-20
+                    // Pre-calculate label positions (middle of each phase)
+                    const labelPositions = {};
+                    for (const phase of sem.phases) {
+                        const mid = Math.floor((phase.from + phase.to) / 2);
+                        labelPositions[mid] = phase.name;
+                    }
+
+                    const maxWeek = sem.maxWeek || 20;
+                    for (let w = 1; w <= maxWeek; w++) {
+                        const events = sem.weeks[w] || [];
+                        const weekType = getWeekType(events);
+                        const phase = getPhaseForWeek(sem, w);
+                        const phaseClass = phase ? getPhaseClass(phase) : 'phase-gap';
+                        const label = labelPositions[w] || '';
+
+                        const wNode = document.createElement('div');
+                        wNode.className = 'week-node';
+
+                        // Edge detection for panel positioning
+                        if (w <= 2 && !sem.preHoliday) wNode.classList.add('edge-left');
+                        if (w >= 19 && !sem.postHoliday) wNode.classList.add('edge-right');
+
+                        const panelTitle = `${sem.fullLabel} · 第${w}周`;
+                        const emptyMsg = (sem.num <= 3 && w <= 16) ? '课程学习，暂无特定事项' : '暂无特定事项';
+                        wNode.innerHTML = `
+                            <div class="week-circle ${weekType}">${w}</div>
+                            <div class="activities-panel">
+                                ${buildPanelHTML(panelTitle, phase, events, emptyMsg)}
+                            </div>
+                        `;
+                        weeksStrip.appendChild(wNode);
+                        totalNodes.push(w);
+                    }
+
+                    // Post-holiday
+                    if (sem.postHoliday) {
+                        const hNode = document.createElement('div');
+                        hNode.className = 'week-node edge-right';
+                        const hasEvents = sem.postHoliday.events.length > 0;
+                        hNode.innerHTML = `
+                            <div class="week-circle holiday${hasEvents ? ' has-events' : ''}">${sem.postHoliday.label}</div>
+                            <div class="activities-panel">
+                                ${buildPanelHTML(sem.fullLabel + ' · ' + sem.postHoliday.label, null, sem.postHoliday.events)}
+                            </div>
+                        `;
+                        weeksStrip.appendChild(hNode);
+                    }
+
+                    semContent.appendChild(weeksStrip);
+
+                    // Phase bar container (positioned by JS after render)
+                    const phaseBarContainer = document.createElement('div');
+                    phaseBarContainer.className = 'phase-bar-container';
+                    phaseBarContainer.dataset.semIdx = String(semesters.indexOf(sem));
+                    semContent.appendChild(phaseBarContainer);
+
+                    semRow.appendChild(semContent);
+                    yearSection.appendChild(semRow);
+                });
+
+                container.appendChild(yearSection);
+            });
+
+            // Notes section
+            const notes = document.createElement('div');
+            notes.className = 'notes-section';
+            notes.innerHTML = `
+                <div class="notes-title">重要提示</div>
+                <div class="notes-content">
+                    &bull; 硕博连读选拔后需兼顾课程与科研，不建议第三学年再参与选拔<br>
+                    &bull; 研三阶段需同时兼顾求职与论文撰写，建议提前梳理参与的科研项目成果<br>
+                    &bull; 选导师后应尽早确定学位论文选题方向，积极参与中心科研项目是论文答辩的审核条件
+                </div>
+            `;
+            container.appendChild(notes);
+        }
+
+        renderTimeline();
+
+        function alignPhaseBars() {
+            document.querySelectorAll('.phase-bar-container').forEach(container => {
+                container.innerHTML = '';
+                const semIdx = parseInt(container.dataset.semIdx);
+                const sem = semesters[semIdx];
+                const strip = container.previousElementSibling; // .weeks-strip
+                const weekNodes = strip.querySelectorAll('.week-node');
+                const containerRect = container.getBoundingClientRect();
+                const hasPreHoliday = sem.preHoliday ? 1 : 0;
+
+                sem.phases.forEach(phase => {
+                    const startIdx = hasPreHoliday + phase.from - 1;
+                    const endIdx = hasPreHoliday + phase.to - 1;
+                    const startNode = weekNodes[startIdx];
+                    const endNode = weekNodes[endIdx];
+                    if (!startNode || !endNode) return;
+
+                    const startRect = startNode.getBoundingClientRect();
+                    const endRect = endNode.getBoundingClientRect();
+                    const left = startRect.left - containerRect.left;
+                    const width = endRect.right - startRect.left;
+
+                    const seg = document.createElement('div');
+                    seg.className = 'phase-bar-segment ' + getPhaseClass(phase.name);
+                    seg.style.left = left + 'px';
+                    seg.style.width = width + 'px';
+                    container.appendChild(seg);
+
+                    const lbl = document.createElement('div');
+                    lbl.className = 'phase-bar-label';
+                    lbl.textContent = phase.name;
+                    lbl.style.left = (left + width / 2) + 'px';
+                    container.appendChild(lbl);
+                });
+            });
+        }
+
+        alignPhaseBars();
+        window.addEventListener('resize', alignPhaseBars);
+    </script>
+</body>
+</html>
