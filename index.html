@@ -419,6 +419,7 @@
         .activity-card.thesis-highlight .activity-name { color: #cc0000; font-weight: 700; }
         .activity-card.thesis-highlight { color: #cc0000; }
         .activity-card.normal-highlight .activity-name { color: #e65100; }
+        .activity-card.normal-highlight { color: #e65100; }
 
         .activity-files {
             display: flex;
@@ -528,9 +529,9 @@
             </div>
             <div class="legend-bar">
                 <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">阶段条：</span>
-                <span class="legend-bar-segment phase-teaching" title="课堂教学"></span>
+                <span class="legend-bar-segment phase-teaching" title="课堂学习"></span>
                 <span class="legend-bar-segment phase-exam" title="考试周"></span>
-                <span class="legend-bar-segment phase-practice" title="实习实践"></span>
+                <span class="legend-bar-segment phase-practice" title="参与调研、课题等"></span>
                 <span class="legend-bar-segment phase-thesis" title="论文撰写"></span>
                 <span class="legend-bar-segment phase-graduation" title="毕业事宜"></span>
             </div>
@@ -573,6 +574,7 @@
             if (eventName.includes('师生互选')) {
                 return ["《中央财经大学硕士研究生培养计划表》"];
             }
+            if (eventName.includes('科教融汇')) return [];
             if (eventName.includes('社会性')) return [];
             if (eventName.includes('国奖') || eventName.includes('奖助')) {
                 return ["《研究生国家奖学金评审办法》", "《研究生学业奖学金评审管理办法》", "《研究生三助一辅工作管理办法》", "《研究生特殊困难补助管理办法》", "《家庭经济困难研究生认定工作办法》"];
@@ -611,9 +613,9 @@
         // Phase color mapping
         const phaseColors = {
             '入学教育': 'phase-education',
-            '课堂教学': 'phase-teaching',
+            '课堂学习': 'phase-teaching',
             '考试周': 'phase-exam',
-            '实习实践': 'phase-practice',
+            '参与调研、课题等': 'phase-practice',
             '学位论文撰写': 'phase-thesis',
             '学位论文答辩等毕业相关事宜': 'phase-graduation'
         };
@@ -634,16 +636,16 @@
                 postHoliday: { label: "寒假", events: [] },
                 phases: [
                     { from: 1, to: 1, name: "入学教育" },
-                    { from: 2, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 2, to: 16, name: "课堂学习（积极参与科研项目等）" },
                     { from: 17, to: 18, name: "考试周" },
-                    { from: 19, to: 20, name: "实习实践" }
+                    { from: 19, to: 20, name: "参与调研、课题等" }
                 ],
                 weeks: {
                     1: ["报到、注册、退选课"],
                     2: ["新生班会、新生入学图像采集、学信网核对学籍信息"],
-                    4: ["硕博连读选拔"],
+                    4: ["硕博连读选拔", "主要对专业素质和科研潜质进行考察，考试形式为面试，总成绩为百分制。考察对本专业基础知识、学术前沿动态的掌握情况及在本学科领域发展的科研水平和研究潜质，另外还综合考虑研究计划、思想道德品质、大学期间学习成绩和身体检查等情况"],
                     6: ["国奖、学业奖等奖助工作评定、家庭经济困难认定"],
-                    8: ["积极分子推优、秋季学期运动会"],
+                    8: ["积极分子推优、秋季学期运动会", "积极分子推优一年组织两次，一次在4月，一次在10月。自递交入党申请书起，每三个月需要撰写一篇思想汇报。若硕士新生在入学时已经递交过入党申请书/已经处于积极分子、发展对象、预备党员等发展阶段，发展入党流程根据实际情况决定。"],
                     9: ["研究生培养座谈会"],
                     10: ["社会性奖助学金申请"],
                     11: ["三好学生、优秀学生干部、优秀班集体等评选"],
@@ -656,18 +658,18 @@
                 preHoliday: { label: "寒假", events: [] },
                 postHoliday: { label: "暑假", events: [] },
                 phases: [
-                    { from: 1, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 1, to: 16, name: "课堂学习（积极参与科研项目等）" },
                     { from: 17, to: 18, name: "考试周" },
-                    { from: 19, to: 20, name: "实习实践" }
+                    { from: 19, to: 20, name: "参与调研、课题等" }
                 ],
                 weeks: {
                     1: ["报到、注册、退选课、期初公共课补考、重修"],
-                    2: ["研究生论文大赛"],
-                    4: ["龙马学术之星评选"],
+                    2: ["研究生论文大赛", "论文大赛奖项设一等奖、二等奖、三等奖，发放奖金。获奖论文（获奖者为第一作者或指导老师为第一作者、获奖者为第二作者）在学校规定的 A 类或以上期刊发表，或在学校规定的 B 类刊物发表，将有相应资助额度"],
+                    4: ["龙马学术之星评选", "面向对象：在校研究生( 硕士、博士 )预期收获：1.获奖证书 2.奖金奖助设置：具体奖励金额以当年评选通知为准开展时间：报名时间 3月"],
                     6: ["积极分子推优"],
-                    7: ["科教融汇研究生学术新星孵化计划申报"],
+                    7: ["科教融汇研究生学术新星孵化计划申报", "面向对象：拟录取研究生及低年级在校研究生，学习方式应为全日制预期收获：1. 计划成员通过项目中期考核后，可根据培养方案计 1 个学分（与创新实践选修课程学分互换）2. 立项、结项证书，相应奖励荣誉证书奖助设置：1. 每个项目立项后可分阶段获得资助，资助总金额不超过 1 万元；2. 结项答辩环节将评选出成果一、二、三等奖以及最佳指导教师和最佳团队等奖项，各奖项奖金额度以当年通知为准开展时间：报名时间4 月 -6 月"],
                     8: ["春季学期运动会"],
-                    9: ["发展对象推优"],
+                    9: ["发展对象推优", "每年4月底-5月初组织发展对象推优。发展对象推优一年组织一次"],
                     13: ["6月中旬前可提交研究生学术交流奖励计划申请"],
                     14: ["上半年全国大学英语四、六级考试"]
                 }
@@ -677,13 +679,13 @@
                 preHoliday: { label: "暑假", events: [] },
                 postHoliday: { label: "寒假", events: [] },
                 phases: [
-                    { from: 1, to: 16, name: "课堂教学（鼓励参与科研）" },
+                    { from: 1, to: 16, name: "课堂学习（积极参与科研项目等）" },
                     { from: 17, to: 18, name: "考试周" },
-                    { from: 19, to: 20, name: "实习实践" }
+                    { from: 19, to: 20, name: "参与调研、课题等" }
                 ],
                 weeks: {
                     1: ["报到、注册、退选课、期初公共课补考、重修"],
-                    4: ["硕博连读选拔"],
+                    4: ["硕博连读选拔", "主要对专业素质和科研潜质进行考察，考试形式为面试，总成绩为百分制。考察对本专业基础知识、学术前沿动态的掌握情况及在本学科领域发展的科研水平和研究潜质，另外还综合考虑研究计划、思想道德品质、大学期间学习成绩和身体检查等情况"],
                     6: ["国奖、学业奖等奖助工作评定、家庭经济困难认定"],
                     8: ["积极分子推优、秋季学期运动会"],
                     9: ["研究生培养座谈会"],
@@ -698,17 +700,16 @@
                 preHoliday: { label: "寒假", events: ["期初公共课补考、重修"] },
                 postHoliday: { label: "暑假", events: [] },
                 phases: [
-                    { from: 1, to: 18, name: "确定选题、准备开题" },
-                    { from: 19, to: 20, name: "实习实践" }
+                    { from: 1, to: 18, name: "确定选题、准备开题；梳理参与科研项目、课题等做好求职准备" }
                 ],
                 weeks: {
                     1: ["报到、注册、退选课"],
-                    2: ["研究生论文大赛"],
-                    4: ["龙马学术之星评选"],
+                    2: ["研究生论文大赛", "论文大赛奖项设一等奖、二等奖、三等奖，发放奖金。获奖论文（获奖者为第一作者或指导老师为第一作者、获奖者为第二作者）在学校规定的 A 类或以上期刊发表，或在学校规定的 B 类刊物发表，将有相应资助额度"],
+                    4: ["龙马学术之星评选", "面向对象：在校研究生( 硕士、博士 )预期收获：1.获奖证书 2.奖金奖助设置：具体奖励金额以当年评选通知为准开展时间：报名时间 3月"],
                     6: ["积极分子推优"],
-                    7: ["硕博连读中期考核"],
+                    7: ["硕博连读中期考核", "硕博连读研究生培养以课程学习和科学研究为主，中期考核是考查硕博连读研究生能否转入博士研究生阶段的关键环节。中期考核通过者，转入博士研究生阶段。"],
                     8: ["春季学期运动会"],
-                    9: ["发展对象推优"],
+                    9: ["发展对象推优", "每年4月底-5月初组织发展对象推优。发展对象推优一年组织一次"],
                     13: ["6月中旬前可提交研究生学术交流奖励计划申请"],
                     14: ["上半年全国大学英语四、六级考试"],
                     15: ["学位论文开题答辩", "通过开题的硕士研究生进入硕士学位论文的写作阶段。未通过开题的硕士研究生，须在导师指导下根据开题论证委员会意见对开题报告进行修改，再次开题时间由导师与学院共同确定。如果第二次开题论证仍未通过，则取消其申请硕士学位的资格，做结业处理。"],
@@ -720,7 +721,7 @@
                 preHoliday: { label: "暑假", events: [] },
                 postHoliday: { label: "寒假", events: [] },
                 phases: [
-                    { from: 1, to: 20, name: "学位论文撰写" }
+                    { from: 1, to: 20, name: "学位论文撰写、求职" }
                 ],
                 weeks: {
                     1: ["硕士研究生调研实习报告（第五学期前完成）"],
@@ -747,7 +748,7 @@
                     4: ["研究生论文大赛、龙马学术之星评选"],
                     7: ["匿名评审结果返回，修改论文"],
                     8: ["毕业资格审核"],
-                    9: ["发展对象推优"],
+                    9: ["发展对象推优", "每年4月底-5月初组织发展对象推优。发展对象推优一年组织一次"],
                     11: ["学位论文正式答辩"],
                     12: ["优秀毕业生评选"],
                     14: ["毕业典礼"],
@@ -789,11 +790,11 @@
             if (events && events.length > 0) {
                 const firstImportant = isImportant(events[0]);
                 html += events.map((e, idx) => {
-                    const imp = (idx === 0) ? firstImportant : firstImportant || isImportant(e);
-                    const cls = imp ? 'thesis-highlight' : 'normal-highlight';
+                    const cls = firstImportant ? 'thesis-highlight' : 'normal-highlight';
+                    const fileHtml = (idx === 0) ? buildFileHTML(e) : '';
                     return `<div class="activity-card ${cls}">
                         <div class="activity-name">${e}</div>
-                        ${buildFileHTML(e)}
+                        ${fileHtml}
                     </div>`;
                 }).join('');
             } else {
@@ -811,7 +812,7 @@
             prepCard.innerHTML = `
                 <div class="prep-badge">研0 预备期</div>
                 <div class="prep-content">
-                    推免结束后：了解中心导师研究方向，<strong>积极联系中心老师参与科研项目</strong>，研读《学术型硕士研究生培养方案》
+                    推免结束后，研读培养方案，主动接触老师、阅读双向材料、充分了解老师的研究主题和要求、参与中心课题&老师研究工作等
                 </div>
             `;
             container.appendChild(prepCard);
